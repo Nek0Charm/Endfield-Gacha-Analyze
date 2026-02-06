@@ -125,6 +125,14 @@ def simulate_once(rng: np.random.Generator) -> int:
             up_character = True
         tokens += earned
 
+        if state.paid_pulls == 120 and not up_character and not state.big_pity_used:
+            up_character = True
+            tokens += (2000 - earned)
+            state.pulls_since_6 = 0
+            state.pulls_since_up = 0
+            state.pulls_since_5plus = 0
+            state.big_pity_used = True
+
         if state.paid_pulls >= 30 and not state.bonus_used and not up_character:
             bonus_up, bonus_tokens = _apply_bonus_ten_pull(rng)
             tokens += bonus_tokens
